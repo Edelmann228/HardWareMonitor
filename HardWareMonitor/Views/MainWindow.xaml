@@ -13,6 +13,7 @@
     </Window.DataContext>
 
     <Window.Resources>
+        <!-- Стиль для карточек с тенью -->
         <Style TargetType="Border" x:Key="CardStyle">
             <Setter Property="Background" Value="White"/>
             <Setter Property="CornerRadius" Value="8"/>
@@ -25,6 +26,7 @@
             <Setter Property="Padding" Value="15"/>
         </Style>
 
+        <!-- Стиль для кнопок навигации -->
         <Style TargetType="Button" x:Key="NavButtonStyle">
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="15,8"/>
@@ -40,17 +42,20 @@
             </Style.Triggers>
         </Style>
 
+        <!-- Стиль для заголовков информации -->
         <Style TargetType="TextBlock" x:Key="InfoLabelStyle">
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="#666666"/>
             <Setter Property="Margin" Value="0,5,10,5"/>
         </Style>
 
+        <!-- Стиль для значений информации -->
         <Style TargetType="TextBlock" x:Key="InfoValueStyle">
             <Setter Property="Margin" Value="0,5,0,5"/>
             <Setter Property="Foreground" Value="#333333"/>
         </Style>
 
+        <!-- Стиль для индикаторов прогресса -->
         <Style TargetType="Border" x:Key="ProgressBarStyle">
             <Setter Property="Background" Value="#E0E0E0"/>
             <Setter Property="CornerRadius" Value="3"/>
@@ -59,12 +64,17 @@
         </Style>
     </Window.Resources>
 
+    <!-- Основная сетка окна -->
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- Заголовок -->
             <RowDefinition Height="Auto"/>
+            <!-- Панель навигации -->
             <RowDefinition Height="*"/>
+            <!-- Основной контент -->
             <RowDefinition Height="Auto"/>
+            <!-- Статус бар -->
         </Grid.RowDefinitions>
 
         <!-- Заголовок и кнопка справки -->
@@ -153,7 +163,8 @@
         <Border Grid.Row="2" Style="{StaticResource CardStyle}" Background="White">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <StackPanel Margin="15">
-                    <!-- Секция CPU -->
+
+                    <!-- Секция процессора -->
                     <StackPanel Visibility="{Binding IsCpuVisible}">
                         <TextBlock Text="ПРОЦЕССОР" FontSize="18" FontWeight="Bold" 
                                    Foreground="#2196F3" Margin="0,0,0,15"/>
@@ -193,6 +204,7 @@
                                        Style="{StaticResource InfoValueStyle}"/>
                         </Grid>
 
+                        <!-- Индикатор загрузки CPU -->
                         <TextBlock Text="Загрузка CPU:" Margin="0,15,0,5"/>
                         <Border Style="{StaticResource ProgressBarStyle}">
                             <Grid>
@@ -206,7 +218,7 @@
                         </Border>
                     </StackPanel>
 
-                    <!-- Секция GPU -->
+                    <!-- Секция видеокарты (без загрузки) -->
                     <StackPanel Visibility="{Binding IsGpuVisible}">
                         <TextBlock Text="ВИДЕОКАРТА" FontSize="18" FontWeight="Bold" 
                                    Foreground="#9C27B0" Margin="0,0,0,15"/>
@@ -231,7 +243,7 @@
                         </Grid>
                     </StackPanel>
 
-                    <!-- Секция RAM -->
+                    <!-- Секция оперативной памяти -->
                     <StackPanel Visibility="{Binding IsMemoryVisible}">
                         <TextBlock Text="ОПЕРАТИВНАЯ ПАМЯТЬ" FontSize="18" FontWeight="Bold" 
                                    Foreground="#4CAF50" Margin="0,0,0,15"/>
@@ -261,6 +273,7 @@
                             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding MemoryInfo.Modules.Count}" Style="{StaticResource InfoValueStyle}"/>
                         </Grid>
 
+                        <!-- Индикатор использования памяти -->
                         <TextBlock Text="Использование памяти:" Margin="0,15,0,5"/>
                         <Border Style="{StaticResource ProgressBarStyle}">
                             <Grid>
@@ -273,6 +286,7 @@
                             </Grid>
                         </Border>
 
+                        <!-- Список модулей памяти -->
                         <TextBlock Text="Модули памяти:" FontWeight="Bold" Margin="0,15,0,5"/>
                         <ItemsControl ItemsSource="{Binding MemoryInfo.Modules}">
                             <ItemsControl.ItemTemplate>
@@ -298,6 +312,7 @@
 
                     <!-- Секция дисков -->
                     <StackPanel Visibility="{Binding IsDiskVisible}">
+                        <!-- Физические диски -->
                         <TextBlock Text="ФИЗИЧЕСКИЕ ДИСКИ" FontSize="18" FontWeight="Bold" 
                                    Foreground="#FF9800" Margin="0,0,0,15"/>
 
@@ -321,6 +336,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
+                        <!-- Логические диски -->
                         <TextBlock Text="ЛОГИЧЕСКИЕ ДИСКИ" FontSize="18" FontWeight="Bold" 
                                    Foreground="#FF9800" Margin="0,0,0,15"/>
 
@@ -345,6 +361,7 @@
                                             <TextBlock Grid.Column="3" Text="{Binding FileSystem}"/>
                                         </Grid>
 
+                                        <!-- Индикатор заполнения диска -->
                                         <TextBlock Text="Заполнение:" Margin="0,5,0,2"/>
                                         <Border Style="{StaticResource ProgressBarStyle}" Height="15">
                                             <Grid>
@@ -391,7 +408,7 @@
                         </Grid>
                     </StackPanel>
 
-                    <!-- ДИСПЕТЧЕР ЗАДАЧ (исправленная версия) -->
+                    <!-- Секция диспетчера задач -->
                     <StackPanel Visibility="{Binding IsTaskManagerVisible}">
                         <TextBlock Text="ДИСПЕТЧЕР ЗАДАЧ" FontSize="18" FontWeight="Bold" 
                                    Foreground="#FF5722" Margin="0,0,0,15"/>
@@ -430,7 +447,7 @@
                                 </Grid>
                             </Border>
 
-                            <!-- Список процессов с фиксированной высотой -->
+                            <!-- Список процессов -->
                             <ListView Grid.Row="1" 
                                       ItemsSource="{Binding FilteredProcesses}" 
                                       Height="300"
@@ -523,6 +540,7 @@
                     <ColumnDefinition Width="300"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Кнопки экспорта и обновления -->
                 <StackPanel Orientation="Horizontal">
                     <Button Content="Экспорт TXT" Command="{Binding ExportTxtCommand}" 
                             Margin="5" Padding="15,5"/>
@@ -534,6 +552,7 @@
                             Margin="5" Padding="15,5"/>
                 </StackPanel>
 
+                <!-- Строка статуса -->
                 <Border Grid.Column="1" Background="#F5F5F5" CornerRadius="5" Padding="8">
                     <TextBlock Text="{Binding StatusMessage}" 
                              TextWrapping="Wrap"

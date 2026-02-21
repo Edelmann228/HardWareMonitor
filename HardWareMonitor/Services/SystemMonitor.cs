@@ -6,6 +6,7 @@ namespace HardWareMonitor.Services
 {
     public class SystemMonitor
     {
+        // Получает информацию об операционной системе: название, версия и имя компьютера
         public SystemInfo GetSystemInfo()
         {
             SystemInfo systemInfo = new SystemInfo();

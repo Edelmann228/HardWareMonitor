@@ -6,6 +6,7 @@ namespace HardWareMonitor.Services
 {
     public class NetworkMonitor
     {
+        // Получает информацию о первом физическом сетевом адаптере: название, MAC-адрес и скорость
         public NetworkAdapterInfo GetNetworkInfo()
         {
             NetworkAdapterInfo adapterInfo = new NetworkAdapterInfo();
@@ -16,7 +17,7 @@ namespace HardWareMonitor.Services
                 adapterInfo.Name = obj["Name"] as string ?? "Unknown";
                 adapterInfo.MacAddress = obj["MACAddress"] as string ?? "Unknown";
                 adapterInfo.Speed = Convert.ToInt64(obj["Speed"] ?? 0);
-                break; // Take first physical adapter for simplicity
+                break;
             }
 
             return adapterInfo;

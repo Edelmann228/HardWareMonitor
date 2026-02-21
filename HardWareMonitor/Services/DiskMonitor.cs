@@ -6,11 +6,11 @@ namespace HardWareMonitor.Services
 {
     public class DiskMonitor
     {
+        // Получает информацию о физических и логических дисках: модель, размер, свободное место, файловую систему
         public DiskInfo GetDiskInfo()
         {
             DiskInfo diskInfo = new DiskInfo();
 
-            // Physical disks
             ManagementObjectSearcher physicalSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_DiskDrive");
             foreach (ManagementObject obj in physicalSearcher.Get())
             {
@@ -21,8 +21,7 @@ namespace HardWareMonitor.Services
                 diskInfo.PhysicalDisks.Add(disk);
             }
 
-            // Logical disks
-            ManagementObjectSearcher logicalSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DriveType=3"); // Fixed disks
+            ManagementObjectSearcher logicalSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DriveType=3");
             foreach (ManagementObject obj in logicalSearcher.Get())
             {
                 LogicalDisk disk = new LogicalDisk();

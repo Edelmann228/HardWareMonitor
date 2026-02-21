@@ -6,6 +6,7 @@ namespace HardWareMonitor.Services
 {
     public class MemoryMonitor
     {
+        // Получает информацию об оперативной памяти: общий объем, доступно, использование и модули памяти
         public MemoryInfo GetMemoryInfo()
         {
             MemoryInfo memoryInfo = new MemoryInfo();

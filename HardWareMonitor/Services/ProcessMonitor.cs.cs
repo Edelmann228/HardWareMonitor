@@ -7,6 +7,7 @@ namespace HardWareMonitor.Services
 {
     public class ProcessMonitor
     {
+        // Получает список всех запущенных процессов с их ID, именем и используемой памятью
         public List<ProcessInfo> GetProcesses()
         {
             List<ProcessInfo> processes = new List<ProcessInfo>();

@@ -53,7 +53,6 @@ namespace HardWareMonitor.ViewModels
             set { SetProperty(ref _systemInfo, value); }
         }
 
-        // Свойства для управления видимостью секций
         private Visibility _isCpuVisible = Visibility.Visible;
         public Visibility IsCpuVisible
         {
@@ -110,7 +109,6 @@ namespace HardWareMonitor.ViewModels
             set { SetProperty(ref _statusMessage, value); }
         }
 
-        // Свойства для управления обновлением
         private int _updateInterval = 3;
         public int UpdateInterval
         {
@@ -141,7 +139,6 @@ namespace HardWareMonitor.ViewModels
 
         private bool _isUpdating = true;
 
-        // Свойства для диспетчера задач
         private string _taskManagerSearchText = "";
         public string TaskManagerSearchText
         {
@@ -174,7 +171,6 @@ namespace HardWareMonitor.ViewModels
         public long TotalMemoryUsage => _allProcesses.Sum(p => p.WorkingSet);
         public double TotalMemoryUsageMb => TotalMemoryUsage / (1024.0 * 1024.0);
 
-        // Команды
         public ICommand RefreshCommand { get; }
         public ICommand ShowCpuCommand { get; }
         public ICommand ShowMemoryCommand { get; }
@@ -199,9 +195,9 @@ namespace HardWareMonitor.ViewModels
         private readonly SystemMonitor _systemMonitor = new SystemMonitor();
         private readonly ProcessMonitor _processMonitor = new ProcessMonitor();
 
+        // Инициализирует команды и запускает автообновление
         public MainViewModel()
         {
-            // Инициализация команд
             RefreshCommand = new RelayCommand(async _ => await RefreshAllDataAsync());
             ShowCpuCommand = new RelayCommand(_ => ShowCpuSection());
             ShowMemoryCommand = new RelayCommand(_ => ShowMemorySection());
@@ -217,13 +213,12 @@ namespace HardWareMonitor.ViewModels
             ExportJsonCommand = new RelayCommand(_ => ExportJson());
             RefreshTaskManagerCommand = new RelayCommand(_ => RefreshTaskManager());
 
-            // Запуск автообновления
             StartAutoRefresh();
 
-            // Первоначальная загрузка данных
             Task.Run(async () => await RefreshAllDataAsync());
         }
 
+        // Запускает таймер автоматического обновления данных
         private void StartAutoRefresh()
         {
             _autoRefreshTimer = new System.Timers.Timer(3000);
@@ -232,6 +227,7 @@ namespace HardWareMonitor.ViewModels
             _autoRefreshTimer.Start();
         }
 
+        // Обновляет все данные асинхронно: информацию о компонентах и список процессов
         private async Task RefreshAllDataAsync()
         {
             try
@@ -254,7 +250,6 @@ namespace HardWareMonitor.ViewModels
                 NetworkInfo = await networkTask;
                 SystemInfo = await systemTask;
 
-                // Обновление процессов
                 _allProcesses = _processMonitor.GetProcesses()
                     .OrderByDescending(p => p.WorkingSet)
                     .ToList();
@@ -275,6 +270,7 @@ namespace HardWareMonitor.ViewModels
             }
         }
 
+        // Обновляет список процессов вручную
         private void RefreshTaskManager()
         {
             _allProcesses = _processMonitor.GetProcesses()
@@ -290,6 +286,7 @@ namespace HardWareMonitor.ViewModels
             StatusMessage = "Список процессов обновлен";
         }
 
+        // Показывает секцию с информацией о процессоре
         private void ShowCpuSection()
         {
             IsCpuVisible = Visibility.Visible;
@@ -301,6 +298,7 @@ namespace HardWareMonitor.ViewModels
             StatusMessage = "Просмотр информации о процессоре";
         }
 
+        // Показывает секцию с информацией о памяти
         private void ShowMemorySection()
         {
             IsCpuVisible = Visibility.Collapsed;
@@ -312,6 +310,7 @@ namespace HardWareMonitor.ViewModels
             StatusMessage = "Просмотр информации о памяти";
         }
 
+        // Показывает секцию с информацией о дисках
         private void ShowDiskSection()
         {
             IsCpuVisible = Visibility.Collapsed;
@@ -323,6 +322,7 @@ namespace HardWareMonitor.ViewModels
             StatusMessage = "Просмотр информации о дисках";
         }
 
+        // Показывает секцию с информацией о видеокарте
         private void ShowGpuSection()
         {
             IsCpuVisible = Visibility.Collapsed;
@@ -334,6 +334,7 @@ namespace HardWareMonitor.ViewModels
             StatusMessage = "Просмотр информации о видеокарте";
         }
 
+        // Показывает секцию с информацией о сети
         private void ShowNetworkSection()
         {
             IsCpuVisible = Visibility.Collapsed;
@@ -345,6 +346,7 @@ namespace HardWareMonitor.ViewModels
             StatusMessage = "Просмотр информации о сети";
         }
 
+        // Показывает секцию диспетчера задач со списком процессов
         private void ShowTaskManagerSection()
         {
             IsCpuVisible = Visibility.Collapsed;
@@ -355,10 +357,10 @@ namespace HardWareMonitor.ViewModels
             IsTaskManagerVisible = Visibility.Visible;
             StatusMessage = "Просмотр диспетчера задач";
 
-            // Обновляем список процессов при открытии
             RefreshTaskManager();
         }
 
+        // Показывает окно справки с инструкцией по использованию
         private void ShowHelp()
         {
             string helpText =
@@ -375,7 +377,7 @@ namespace HardWareMonitor.ViewModels
                 "   - Процессор: модель, ядра, потоки, частота, загрузка\n" +
                 "   - Память: общий объем, доступно, модули, использование\n" +
                 "   - Диски: физические и логические диски, заполнение\n" +
-                "   - Видеокарта: модель, объем видеопамяти\n" +
+                "   - Видеокарта: модель, объем видеопамяти, загрузка\n" +
                 "   - Сеть: адаптер, MAC-адрес, скорость\n\n" +
                 "4. ДИСПЕТЧЕР ЗАДАЧ:\n" +
                 "   - Показывает все активные процессы\n" +
@@ -394,6 +396,7 @@ namespace HardWareMonitor.ViewModels
                 MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        // Применяет новый интервал автоматического обновления
         private void ApplyInterval()
         {
             if (_autoRefreshTimer != null && UpdateInterval > 0)
@@ -404,6 +407,7 @@ namespace HardWareMonitor.ViewModels
             }
         }
 
+        // Включает/выключает автоматическое обновление данных
         private void ToggleUpdate()
         {
             if (_isUpdating)
@@ -425,6 +429,7 @@ namespace HardWareMonitor.ViewModels
             _isUpdating = !_isUpdating;
         }
 
+        // Экспортирует данные в текстовый файл
         private void ExportTxt()
         {
             var dialog = new Microsoft.Win32.SaveFileDialog();
@@ -447,6 +452,7 @@ namespace HardWareMonitor.ViewModels
             }
         }
 
+        // Экспортирует данные в CSV файл
         private void ExportCsv()
         {
             var dialog = new Microsoft.Win32.SaveFileDialog();
@@ -469,6 +475,7 @@ namespace HardWareMonitor.ViewModels
             }
         }
 
+        // Экспортирует данные в JSON файл
         private void ExportJson()
         {
             var dialog = new Microsoft.Win32.SaveFileDialog();

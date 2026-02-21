@@ -7,6 +7,7 @@ namespace HardWareMonitor.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // Уведомляет об изменении свойства
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
@@ -16,6 +17,7 @@ namespace HardWareMonitor.ViewModels
             }
         }
 
+        // Устанавливает значение поля и уведомляет об изменении
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Equals(storage, value))

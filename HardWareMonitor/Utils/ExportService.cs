@@ -11,6 +11,7 @@ namespace HardWareMonitor.Utils
 {
     public class ExportService
     {
+        // Экспортирует данные в текстовый файл с форматированным выводом
         public void ExportToTxt(string filePath, object data)
         {
             StringBuilder sb = new StringBuilder();
@@ -18,20 +19,19 @@ namespace HardWareMonitor.Utils
             File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
         }
 
+        // Экспортирует данные в CSV файл с разделителями точка с запятой
         public void ExportToCsv(string filePath, object data)
         {
             StringBuilder sb = new StringBuilder();
 
             if (data is MainViewModel vm)
             {
-                // Системная информация
                 sb.AppendLine("=== СИСТЕМНАЯ ИНФОРМАЦИЯ ===");
                 sb.AppendLine($"Компьютер;{vm.SystemInfo.MachineName}");
                 sb.AppendLine($"ОС;{vm.SystemInfo.OSName}");
                 sb.AppendLine($"Версия;{vm.SystemInfo.OSVersion}");
                 sb.AppendLine();
 
-                // CPU
                 sb.AppendLine("=== ПРОЦЕССОР ===");
                 sb.AppendLine($"Модель;{vm.CpuInfo.Name}");
                 sb.AppendLine($"Производитель;{vm.CpuInfo.Manufacturer}");
@@ -42,7 +42,6 @@ namespace HardWareMonitor.Utils
                 sb.AppendLine($"Загрузка;{vm.CpuInfo.LoadPercentage:F1}%");
                 sb.AppendLine();
 
-                // Память
                 sb.AppendLine("=== ПАМЯТЬ ===");
                 sb.AppendLine($"Всего;{vm.MemoryInfo.TotalMemoryBytes} байт");
                 sb.AppendLine($"Доступно;{vm.MemoryInfo.AvailableMemoryBytes} байт");
@@ -55,7 +54,6 @@ namespace HardWareMonitor.Utils
                 }
                 sb.AppendLine();
 
-                // Физические диски
                 sb.AppendLine("=== ФИЗИЧЕСКИЕ ДИСКИ ===");
                 sb.AppendLine("Модель;Размер;Тип");
                 foreach (var disk in vm.DiskInfo.PhysicalDisks)
@@ -64,7 +62,6 @@ namespace HardWareMonitor.Utils
                 }
                 sb.AppendLine();
 
-                // Логические диски
                 sb.AppendLine("=== ЛОГИЧЕСКИЕ ДИСКИ ===");
                 sb.AppendLine("Диск;Общий размер;Свободно;Файловая система;Заполнение");
                 foreach (var disk in vm.DiskInfo.LogicalDisks)
@@ -73,20 +70,18 @@ namespace HardWareMonitor.Utils
                 }
                 sb.AppendLine();
 
-                // GPU
                 sb.AppendLine("=== ВИДЕОКАРТА ===");
                 sb.AppendLine($"Модель;{vm.GpuInfo.Name}");
                 sb.AppendLine($"Видеопамять;{vm.GpuInfo.VideoMemory} байт");
+                sb.AppendLine($"Загрузка GPU;{vm.GpuInfo.LoadPercentage:F1}%");
                 sb.AppendLine();
 
-                // Сеть
                 sb.AppendLine("=== СЕТЬ ===");
                 sb.AppendLine($"Адаптер;{vm.NetworkInfo.Name}");
                 sb.AppendLine($"MAC-адрес;{vm.NetworkInfo.MacAddress}");
                 sb.AppendLine($"Скорость;{vm.NetworkInfo.Speed} бит/с");
                 sb.AppendLine();
 
-                // Процессы
                 sb.AppendLine("=== ТОП-20 ПРОЦЕССОВ ===");
                 sb.AppendLine("ID;Имя;Память (байт)");
                 foreach (var process in vm.SystemInfo.Processes)
@@ -98,6 +93,7 @@ namespace HardWareMonitor.Utils
             File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
         }
 
+        // Экспортирует данные в JSON файл с форматированием
         public void ExportToJson(string filePath, object data)
         {
             JsonSerializerOptions options = new JsonSerializerOptions
@@ -109,6 +105,7 @@ namespace HardWareMonitor.Utils
             File.WriteAllText(filePath, json, Encoding.UTF8);
         }
 
+        // Форматирует данные для вывода в текстовый файл с красивым оформлением
         private void AppendData(StringBuilder sb, object data)
         {
             if (data is MainViewModel vm)
@@ -167,6 +164,7 @@ namespace HardWareMonitor.Utils
                 sb.AppendLine("----------------------");
                 sb.AppendLine($"  Модель: {vm.GpuInfo.Name}");
                 sb.AppendLine($"  Объем видеопамяти: {vm.GpuInfo.VideoMemory:N0} байт");
+                sb.AppendLine($"  Загрузка GPU: {vm.GpuInfo.LoadPercentage:F1}%");
                 sb.AppendLine();
 
                 sb.AppendLine("ИНФОРМАЦИЯ О СЕТИ");

@@ -6,6 +6,7 @@ namespace HardWareMonitor.Services
 {
     public class CpuMonitor
     {
+        // Получает информацию о процессоре: модель, количество ядер, потоков, частоту и текущую загрузку
         public CpuInfo GetCpuInfo()
         {
             CpuInfo cpuInfo = new CpuInfo();
@@ -21,7 +22,6 @@ namespace HardWareMonitor.Services
                 cpuInfo.Architecture = obj["Architecture"] as string ?? "Unknown";
             }
 
-            // Get load
             ManagementObjectSearcher loadSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_PerfFormattedData_PerfOS_Processor WHERE Name='_Total'");
             foreach (ManagementObject obj in loadSearcher.Get())
             {
