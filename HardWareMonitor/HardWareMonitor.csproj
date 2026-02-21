@@ -89,6 +89,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utils\ExportService.cs" />
     <Compile Include="Services\CpuMonitor.cs" />
     <Compile Include="Services\DiskMonitor.cs" />
     <Compile Include="Services\GpuMonitor.cs" />
